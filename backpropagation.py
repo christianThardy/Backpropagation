@@ -37,8 +37,8 @@ def network_function(a0) :
     return a0, z1, a1, z2, a2, z3, a3
 
 
-# This is the cost function of a neural network with respect to the training set
-def cost(x, y) :
+# This is the loss function of the neural network with respect to the training set
+def loss(x, y) :
     return np.linalg.norm(network_function(x)[-1] - y)**2 / x.size
 
 
