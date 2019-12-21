@@ -77,6 +77,7 @@ def J_b3 (x, y) :
 
 
 # Compare this function to J_W3 to see how it changes
+# Weight
 def J_W2 (x, y) :
     #The first two lines are identical to in J_W3
     a0, z1, a1, z2, a2, z3, a3 = network_function(x)    
@@ -89,7 +90,7 @@ def J_W2 (x, y) :
     J = J @ a1.T / x.size
     return J
 
-
+# Bias
 def J_b2 (x, y) :
     a0, z1, a1, z2, a2, z3, a3 = network_function(x)
     J = 2 * (a3 - y)
@@ -99,7 +100,7 @@ def J_b2 (x, y) :
     J = np.sum(J, axis=1, keepdims=True) / x.size
     return J
 
-
+# Weight
 def J_W1 (x, y) :
     a0, z1, a1, z2, a2, z3, a3 = network_function(x)
     J = 2 * (a3 - y)
@@ -111,7 +112,7 @@ def J_W1 (x, y) :
     J = J @ a0.T / x.size
     return J
 
-
+# Bias
 def J_b1 (x, y) :
     a0, z1, a1, z2, a2, z3, a3 = network_function(x)
     J = 2 * (a3 - y)
