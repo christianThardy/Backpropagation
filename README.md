@@ -1,4 +1,4 @@
-This script fits a two-layer, feed-forward neural network with seven neurons(pink) to a complex curve using backpropagation implemented from scratch.
+This script fits a two-layer, feed-forward neural network with seven neurons(pink) to a complex curve(green) using backpropagation implemented from scratch.
 
 The algorithm is constructed using functions that calculate the Jacobian of the loss function and its partial derivatives with respect to the weights and biases of the network.
 
