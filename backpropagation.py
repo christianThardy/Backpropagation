@@ -12,7 +12,7 @@ sigmoid_derivative = lambda z : np.cosh(z/2)**(-2) / 4
 
 # This function initializes the network with it's structure and resets any training already done
 # You can tune the reset_network function's parameters neuron_1, neuron_2 to vary the amount of neurons
-# in the hidden layer
+# in each hidden layer
 
 def reset_network (neuron_1 = 6, neuron_2 = 7, random=np.random) :
     global Weight_1, Weight_2, Weight_3, bias_1, bias_2, bias_3
