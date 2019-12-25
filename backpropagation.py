@@ -12,11 +12,11 @@ sigmoid_derivative = lambda z : np.cosh(z/2)**(-2) / 4
 
 
 # This function initializes the network with it's structure and resets any training already done
-# You can tune the reset_network function's parameters n1, n2 to vary the amount of neurons
+# You can tune the reset_network function's parameters neuron_1, neuron_2 to vary the amount of neurons
 # in the hidden layer
 
 def reset_network (neuron_1 = 6, neuron_2 = 7, random=np.random) :
-    global Weight_1, Weight_2, Weight_3, bias_1,e bias_2, bias_3
+    global Weight_1, Weight_2, Weight_3, bias_1, bias_2, bias_3
     Weight_1 = random.randn(neuron_1, 1) / 2
     Weight_2 = random.randn(neuron_2, neuron_1) / 2
     Weight_3 = random.randn(2, neuron_2) / 2
@@ -44,7 +44,7 @@ def loss(x, y) :
 
 # Jacobian for the third layer weights
 
-def Jacobian_Weight__3 (x, y) :
+def Jacobian_Weight_3 (x, y) :
     # Collects all the activations and weighted sums at each layer of the network
     activation_0, z1, activation_1, z2, activation_2, z3, activation_3 = network_function(x)
     
