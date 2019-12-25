@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # Activation function and its derivative
 
 sigmoid = lambda z : 1 / (1 + np.exp(-z))
-d_sigmoid = lambda z : np.cosh(z/2)**(-2) / 4
+sigmoid_derivative = lambda z : np.cosh(z/2)**(-2) / 4
 
 
 # This function initializes the network with it's structure and resets any training already done
@@ -54,7 +54,7 @@ def Jacobian_Weight__3 (x, y) :
     Jacobian = 2 * (activation_3 - y)
     
     # Second, the result is multiplied and calculated by the derivative of sigmoid, evaluated at z3
-    Jacobian = Jacobian * d_sigmoid(z3)
+    Jacobian = Jacobian * sigmoid_derivative(z3)
     
     # Third, the dot product is taken (along the axis that holds the training examples) with the final partial derivative,
     # i.e. dz3/dW3 = a2
@@ -75,7 +75,7 @@ def Jacobian_bias_3 (x, y) :
     
     # Next, the first two partial derivatives of the Jacobian terms are calculated
     Jacobian = 2 * (activation_3 - y)
-    Jacobian = Jacobian * d_sigmoid(z3)
+    Jacobian = Jacobian * sigmoid_derivative(z3)
     
     # For the final line, we don't need to multiply by dz3/db3, because that is multiplying by 1
     # But we still need to sum over all training examples 
@@ -91,11 +91,11 @@ def Jacobian_Weight_2 (x, y) :
     Jacobian = 2 * (activation_3 - y)
     
     # The next two lines implement da3/da2, first σ' and then W3.
-    Jacobian = Jacobian * d_sigmoid(z3)
+    Jacobian = Jacobian * sigmoid_derivative(z3)
     Jacobian = (Jacobian.T @ Weight_3).T
     
     # Then the final lines are the same as in J_W3 but with the layer number bumped down
-    Jacobian = Jacobian * d_sigmoid(z2)
+    Jacobian = Jacobian * sigmoid_derivative(z2)
     Jacobian = Jacobian @ activation_1.T / x.size
     return Jacobian
 
@@ -103,9 +103,9 @@ def Jacobian_Weight_2 (x, y) :
 def Jacobian_bias_2 (x, y) :
     activation_0, z1, activation_1, z2, activation_2, z3, activation_3 = network_function(x)
     Jacobian = 2 * (activation_3 - y)
-    Jacobian = Jacobian * d_sigmoid(z3)
+    Jacobian = Jacobian * sigmoid_derivative(z3)
     Jacboian = (Jacobian.T @ Weight_3).T
-    Jacobian = Jacobian * d_sigmoid(z2)
+    Jacobian = Jacobian * sigmoid_derivative(z2)
     Jacobian = np.sum(Jacobian, axis=1, keepdims=True) / x.size
     return Jacobian
 
@@ -113,11 +113,11 @@ def Jacobian_bias_2 (x, y) :
 def Jacobian_Weight_1 (x, y) :
     activation_0, z1, activation_1, z2, activation_2, z3, activation_3 = network_function(x)
     Jacobian = 2 * (activation_3 - y)
-    Jacobian = Jacobian * d_sigmoid(z3)
+    Jacobian = Jacobian * sigmoid_derivative(z3)
     Jacobian = (Jacobian.T @ Weight_3).T
-    Jacobian = Jacobian * d_sigmoid(z2)
+    Jacobian = Jacobian * sigmoid_derivative(z2)
     Jacobian = (Jacobian.T @ Weight_2).T
-    Jacobian = Jacobian * d_sigmoid(z1)
+    Jacobian = Jacobian * sigmoid_derivative(z1)
     Jacobian = Jacobian @ activation_0.T / x.size
     return Jacobian
 
@@ -125,11 +125,11 @@ def Jacobian_Weight_1 (x, y) :
 def Jacobian_bias_1 (x, y) :
     activation_0, z1, activation_1, z2, activation_2, z3, activation_3 = network_function(x)
     Jacobian = 2 * (activation_3 - y)
-    Jacobian = Jacobian * d_sigmoid(z3)
+    Jacobian = Jacobian * sigmoid_derivative(z3)
     Jacobian = (Jacobian.T @ Weight_3).T
-    Jacobian = Jacobian * d_sigmoid(z2)
+    Jacobian = Jacobian * sigmoid_derivative(z2)
     Jacobian = (Jacobian.T @ Weight_2).T
-    Jacobian = Jacobian * d_sigmoid(z1)
+    Jacobian = Jacobian * sigmoid_derivative(z1)
     Jacobian = np.sum(J, axis=1, keepdims=True) / x.size
     return Jacobian
 
