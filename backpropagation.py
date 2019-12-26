@@ -82,7 +82,7 @@ def Jacobian_bias_3 (x, y) :
     return jacobian
 
 
-# Compare this function to J_W3 to see how it changes
+# Compare this function to Jacobian_Weight_3 to see how it changes
 # Weight
 def Jacobian_Weight_2 (x, y) :
     #The first two lines are identical to in J_W3
