@@ -157,6 +157,7 @@ def plot_training(x, y, epochs=None, learning_rate=None, noise=None):
     global weight_1, weight_2, weight_3, bias_1, bias_2, bias_3
     losses = []
     
+    # Gradient descent
     for epoch in range(epochs):
         # Gaussian noise to improve generalization capabilities
         x_noise = x + noise * np.random.randn(*x.shape)
