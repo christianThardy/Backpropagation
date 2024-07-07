@@ -1,4 +1,3 @@
-# Dependencies
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -7,11 +6,10 @@ def leaky_relu(z, alpha=0.01):
     """Applies the leaky ReLU activation function."""
     return np.where(z > 0, z, alpha * z)
 
-
 def leaky_relu_derivative(z, alpha=0.01):
     """Computes the derivative of the leaky ReLU activation function."""
     return np.where(z > 0, 1, alpha)
-    
+
 
 def initialize_network(neuron_1=None, neuron_2=None, neuron_3=None, random=np.random):
     """Network initialization. Resets the network with new random weights and biases."""
@@ -34,11 +32,11 @@ def forward_propagation(activation_0):
     z3 = weight_3 @ activation_2 + bias_3
     activation_3 = leaky_relu(z3)
     return activation_0, z1, activation_1, z2, activation_2, z3, activation_3
-    
 
-def loss(x, y) :
+
+def loss(x, y):
     """Calculates the loss using mean squared error."""
-    return np.linalg.norm(forward_propagation(x)[-1] - y)**2 / x.size
+    return np.linalg.norm(forward_propagation(x)[-1] - y) ** 2 / x.size
 
 
 def Jacobian_Weight_3(x, y):
@@ -64,6 +62,7 @@ def Jacobian_Weight_3(x, y):
 def Jacobian_bias_3(x, y):
     """
     Calculate the Jacobian for the third layer biases.
+
     This function computes the gradient of the loss function with respect to 
     the biases in the third layer of the network. The process involves:
 
@@ -85,6 +84,7 @@ def Jacobian_bias_3(x, y):
 def Jacobian_Weight_2(x, y):
     """
     Calculates the Jacobian for the second layer weights.
+
     Computes the gradient of the loss function wrt weights in the second layer 
     of the network. Steps:
 
@@ -111,13 +111,13 @@ def Jacobian_bias_2(x, y):
     activation_0, z1, activation_1, z2, activation_2, z3, activation_3 = forward_propagation(x)
     jacobian = 2 * (activation_3 - y)
     jacobian = jacobian * leaky_relu_derivative(z3)
-    jacboian = (jacobian.T @ weight_3).T
+    jacobian = (jacobian.T @ weight_3).T
     jacobian = jacobian * leaky_relu_derivative(z2)
     jacobian = np.sum(jacobian, axis=1, keepdims=True) / x.size
-    return jacobian
+    return jacobian    
 
 
-def Jacobian_Weight_1 (x, y) :
+def Jacobian_Weight_1(x, y):
     """Calculates the Jacobian for the first layer weights."""
     activation_0, z1, activation_1, z2, activation_2, z3, activation_3 = forward_propagation(x)
     jacobian = 2 * (activation_3 - y)
@@ -142,14 +142,13 @@ def Jacobian_bias_1(x, y):
     jacobian = np.sum(jacobian, axis=1, keepdims=True) / x.size
     return jacobian
 
-
 def training_data():
   """Generate training data."""
   t = np.linspace(0, 2 * np.pi, 1000)
   x = (16 * np.sin(t)**3).reshape(1, -1)
   y = (13 * np.cos(t) - 5 * np.cos(2 * t) - 2 * np.cos(3 * t) - np.cos(4 * t)).reshape(1, -1)
   data = np.vstack((x, y))
-  return data, data 
+  return data, data  
 
 
 def plot_training(x, y, epochs=None, learning_rate=None, noise=None):
@@ -199,7 +198,6 @@ def plot_training(x, y, epochs=None, learning_rate=None, noise=None):
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.show()
-
 
 # Fit the training data and parameters
 neuron_1, neuron_2, neuron_3 = 40, 40, 40
