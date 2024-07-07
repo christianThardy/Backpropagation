@@ -157,21 +157,20 @@ def plot_training(x, y, epochs=None, learning_rate=None, noise=None):
     global weight_1, weight_2, weight_3, bias_1, bias_2, bias_3
     losses = []
     
-    # Gradient descent
     for epoch in range(epochs):
         # Gaussian noise to improve generalization capabilities
         x_noise = x + noise * np.random.randn(*x.shape)
         y_noise = y + noise * np.random.randn(*y.shape)
-        
+
         # Compute Jacobians with Gaussian noise
-        J_w3 = Jacobian_Weight_3(x_noise, y_noise)
+        J_w3 = Jacobian_Weight_3(x_noise, y_noise) # Layer 3
         J_b3 = Jacobian_bias_3(x_noise, y_noise)
-        J_w2 = Jacobian_Weight_2(x_noise, y_noise)
+        J_w2 = Jacobian_Weight_2(x_noise, y_noise) # Layer 2
         J_b2 = Jacobian_bias_2(x_noise, y_noise)
-        J_w1 = Jacobian_Weight_1(x_noise, y_noise)
+        J_w1 = Jacobian_Weight_1(x_noise, y_noise) # Layer 1
         J_b1 = Jacobian_bias_1(x_noise, y_noise)
         
-        # Update weights and biases using computed Jacobians
+        # Update weights and biases using computed Jacobians (gradient descent, chain rule, backpropagation)
         weight_3 -= learning_rate * J_w3
         bias_3 -= learning_rate * J_b3
         weight_2 -= learning_rate * J_w2
@@ -208,4 +207,4 @@ initialize_network(neuron_1, neuron_2, neuron_3)
 x, y = training_data()
 
 # Plots the neural network fitting to the outline of a heart
-plot_training(x, y, epochs=170000, learning_rate=1e-4, noise=0.5) # Tune epochs, learning rate of Jacobian, Gaussian noise 
+plot_training(x, y, epochs=170000, learning_rate=1e-4, noise=0.5) # Tune epochs, learning rate of Jacobians, Gaussian noise 
