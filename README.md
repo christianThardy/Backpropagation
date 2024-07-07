@@ -1,4 +1,4 @@
-This script fits a three-layer, feed-forward neural network(green) to a complex curve(pink) using backpropagation implemented from scratch.
+This script fits a three-layer, feed-forward neural network(pink) to a complex curve(green) using backpropagation implemented from scratch.
 
 The algorithm is constructed using functions that calculate the Jacobian of the loss function and its partial derivatives wrt the weights and biases of the network.
 
