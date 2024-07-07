@@ -200,9 +200,11 @@ def plot_training(x, y, epochs=None, learning_rate=None, noise=None):
     plt.ylabel('Loss')
     plt.show()
 
+
 # Fit the training data and parameters
 neuron_1, neuron_2, neuron_3 = 40, 40, 40
 initialize_network(neuron_1, neuron_2, neuron_3)
 x, y = training_data()
+
 # Plots the neural network fitting to the outline of a heart
 plot_training(x, y, epochs=170000, learning_rate=1e-4, noise=0.5) # Tune epochs, learning rate of Jacobian, Gaussian noise 
