@@ -7,13 +7,14 @@ def leaky_relu(z, alpha=0.01):
     """Applies the leaky ReLU activation function."""
     return np.where(z > 0, z, alpha * z)
 
+
 def leaky_relu_derivative(z, alpha=0.01):
     """Computes the derivative of the leaky ReLU activation function."""
     return np.where(z > 0, 1, alpha)
 
 
 def initialize_network(neuron_1=None, neuron_2=None, neuron_3=None, random=np.random):
-    """Network initialization. Resets the network with new random weights and biases."""
+    """He initialization. Resets the network with new random weights and biases."""
     global weight_1, weight_2, weight_3, bias_1, bias_2, bias_3
     weight_1 = random.randn(neuron_1, 2) * np.sqrt(2 / 2)
     weight_2 = random.randn(neuron_2, neuron_1) * np.sqrt(2 / neuron_1)
@@ -142,6 +143,7 @@ def Jacobian_bias_1(x, y):
     jacobian = jacobian * leaky_relu_derivative(z1)
     jacobian = np.sum(jacobian, axis=1, keepdims=True) / x.size
     return jacobian
+
 
 def training_data():
   """Generate training data."""
