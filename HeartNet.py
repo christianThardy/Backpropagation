@@ -1,15 +1,16 @@
 # Dependencies
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 
 
 def leaky_relu(z, alpha=0.01):
-    """Applies the leaky ReLU activation function."""
+    """Applies leaky ReLU activation function."""
     return np.where(z > 0, z, alpha * z)
 
 
 def leaky_relu_derivative(z, alpha=0.01):
-    """Computes the derivative of the leaky ReLU activation function."""
+    """Compute derivative of the leaky ReLU activation function."""
     return np.where(z > 0, 1, alpha)
 
 
@@ -25,7 +26,7 @@ def initialize_network(neuron_1=None, neuron_2=None, neuron_3=None, random=np.ra
 
 
 def forward_propagation(activation_0):
-    """Performs forward propagation through the network."""
+    """Perform forward propagation through the network."""
     global weight_1, weight_2, weight_3, bias_1, bias_2, bias_3
     z1 = weight_1 @ activation_0 + bias_1
     activation_1 = leaky_relu(z1)
@@ -37,12 +38,12 @@ def forward_propagation(activation_0):
 
 
 def loss(x, y):
-    """Calculates the loss using mean squared error."""
+    """Calculate loss using mean squared error."""
     return np.linalg.norm(forward_propagation(x)[-1] - y) ** 2 / x.size
 
 
 def Jacobian_Weight_3(x, y):
-    """Calculates the Jacobian for the third layer weights.
+    """Calculate Jacobian for the third layer weights.
        
        1. Collect all activations and weighted sums at each layer of the network.
        2. Variable J will store parts of the result as the network trains, updating it 
@@ -63,7 +64,7 @@ def Jacobian_Weight_3(x, y):
 
 def Jacobian_bias_3(x, y):
     """
-    Calculate the Jacobian for the third layer biases.
+    Calculate Jacobian for the third layer biases.
 
     This function computes the gradient of the loss function with respect to 
     the biases in the third layer of the network. The process involves:
@@ -85,7 +86,7 @@ def Jacobian_bias_3(x, y):
 
 def Jacobian_Weight_2(x, y):
     """
-    Calculates the Jacobian for the second layer weights.
+    Calculate Jacobian for the second layer weights.
 
     Computes the gradient of the loss function wrt weights in the second layer 
     of the network. Steps:
@@ -120,7 +121,7 @@ def Jacobian_bias_2(x, y):
 
 
 def Jacobian_Weight_1(x, y):
-    """Calculates the Jacobian for the first layer weights."""
+    """Calculate Jacobian for the first layer weights."""
     activation_0, z1, activation_1, z2, activation_2, z3, activation_3 = forward_propagation(x)
     jacobian = 2 * (activation_3 - y)
     jacobian = jacobian * leaky_relu_derivative(z3)
@@ -151,13 +152,44 @@ def training_data():
   x = (16 * np.sin(t)**3).reshape(1, -1)
   y = (13 * np.cos(t) - 5 * np.cos(2 * t) - 2 * np.cos(3 * t) - np.cos(4 * t)).reshape(1, -1)
   data = np.vstack((x, y))
-  return data, data  
+  return data, data
+
+
+def make_colormap(seq):
+    """Create a linear segmented colormap."""
+    seq = [(None,) * 3, 0.0] + list(seq) + [1.0, (None,) * 3]
+    cdict = {'red': [], 'green': [], 'blue': []}
+    for i, item in enumerate(seq):
+        if isinstance(item, float):
+            r1, g1, b1 = seq[i - 1]
+            r2, g2, b2 = seq[i + 1]
+            cdict['red'].append([item, r1, r2])
+            cdict['green'].append([item, g1, g2])
+            cdict['blue'].append([item, b1, b2])
+    return mcolors.LinearSegmentedColormap('CustomMap', cdict)
 
 
 def plot_training(x, y, epochs=None, learning_rate=None, noise=None):
     """Train network and plot results."""
     global weight_1, weight_2, weight_3, bias_1, bias_2, bias_3
     losses = []
+
+    # Define plot size and dimensions
+    fig, ax = plt.subplots(figsize=(8, 8), dpi=80)
+    ax.set_xlim([-20, 20])
+    ax.set_ylim([-20, 20])
+    ax.set_aspect(1)
+    
+    # Define colors
+    magenta = (0xfc/255, 0x75/255, 0xdb/255) # Brighter magenta
+    magentaTrans = (0xfc/255, 0x75/255, 0xdb/255, 0.4) # Less transparent magenta
+    orange = (218/255, 171/255, 115/255)
+    green = (175/255, 219/255, 133/255)
+    white = (240/255, 245/255, 250/255)
+    blue1 = (70/255, 101/255, 137/255)
+    blue2 = (122/255, 174/255, 215/255)
+    blueMap = make_colormap([blue2, blue1])
+    im = ax.imshow(np.zeros((2, 2)), vmin=0, vmax=1, extent=[-20, 20, -20, 20], cmap=blueMap)
     
     for epoch in range(epochs):
         # Gaussian noise to improve generalization capabilities
@@ -180,22 +212,26 @@ def plot_training(x, y, epochs=None, learning_rate=None, noise=None):
         weight_1 -= learning_rate * J_w1
         bias_1 -= learning_rate * J_b1
         
-        # Calculate and record current loss
-        current_loss = loss(x, y)
-        losses.append(current_loss)
-        
         # Plot training progress every 1000 epochs
         if epoch % 1000 == 0:
             plt.clf()
-            plt.scatter(x[0, :], x[1, :], color='red', marker='.', label='Training Data')
-            prediction = forward_propagation(x)[-1]
-            plt.scatter(prediction[0, :], prediction[1, :], color='blue', marker='.', label='Prediction')
-            plt.legend()
-            plt.title(f'Epoch: {epoch}, Loss: {current_loss:.4f}')
+            fig, ax = plt.subplots(figsize=(8, 8), dpi=80)
+            ax.set_xlim([-20, 20])
+            ax.set_ylim([-20, 20])
+            ax.set_aspect(1)
+            plt.imshow(np.zeros((2, 2)), vmin=0, vmax=1, extent=[-20, 20, -20, 20], cmap=blueMap)
+            plt.plot(y[0], y[1], lw=1.5, color=green)
+            nf = forward_propagation(x)[-1]
+            plt.plot(nf[0], nf[1], lw=2, color=magentaTrans)
+            plt.title(f'Epoch: {epoch}, Loss: {loss(x, y):.4f}')
             plt.pause(0.1)
+        
+        # Calculate and record current loss
+        current_loss = loss(x, y)
+        losses.append(current_loss)
 
     # Plot training loss over epochs
-    plt.figure()
+    plt.figure(figsize=(8, 8), dpi=80)
     plt.plot(losses)
     plt.title('Training Loss over Epochs')
     plt.xlabel('Epochs')
