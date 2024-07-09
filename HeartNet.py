@@ -204,7 +204,8 @@ def plot_training(x, y, epochs=None, learning_rate=None, noise=None):
         J_w1 = Jacobian_Weight_1(x_noise, y_noise) # Layer 1
         J_b1 = Jacobian_bias_1(x_noise, y_noise)
         
-        # Update weights and biases using computed Jacobians (gradient descent, chain rule, backpropagation)
+        '''Update weights and biases using computed Jacobians 
+           (gradient descent, chain rule, backpropagation)'''
         weight_3 -= learning_rate * J_w3
         bias_3 -= learning_rate * J_b3
         weight_2 -= learning_rate * J_w2
