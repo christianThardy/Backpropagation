@@ -19,10 +19,10 @@ def initialize_network(neuron_1=None, neuron_2=None, neuron_3=None, random=np.ra
     global weight_1, weight_2, weight_3, bias_1, bias_2, bias_3
     weight_1 = random.randn(neuron_1, 2) * np.sqrt(2 / 2)
     weight_2 = random.randn(neuron_2, neuron_1) * np.sqrt(2 / neuron_1)
-    weight_3 = random.randn(2, neuron_2) * np.sqrt(2 / neuron_2)
+    weight_3 = random.randn(2, neuron_3) * np.sqrt(2 / neuron_2)
     bias_1 = random.randn(neuron_1, 1) * np.sqrt(2 / 2)
     bias_2 = random.randn(neuron_2, 1) * np.sqrt(2 / neuron_1)
-    bias_3 = random.randn(2, 1) * np.sqrt(2 / neuron_2)
+    bias_3 = random.randn(2, 1) * np.sqrt(2 / neuron_3)
 
 
 def forward_propagation(activation_0):
